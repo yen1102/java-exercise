@@ -1,0 +1,167 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.Random;
+
+public class Desktoppet extends JFrame {
+    private JLabel petLabel1;
+    private Timer timer;
+    private Timer sleepTimer;
+    private Random random;
+    private picture pc;
+    private int screenwidth;
+    private int screenheight;
+    private PhotoMoving photomove1;
+    private int xDirection;
+    private int yDirection;
+    private int state;
+    private boolean ifchange;
+    private boolean checkmove;
+    private int sleeptime;
+    private int dontsleep;
+
+    private int energy;
+
+    public Desktoppet() {
+        setTitle("Desk Pet");
+
+        state = 1;
+        dontsleep=0;
+        ifchange=false;
+        energy=100;
+        
+        Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
+        screenwidth = (int) screensize.getWidth();
+        screenheight = (int) screensize.getHeight();
+        setSize(screenwidth, screenheight);
+        getRootPane().putClientProperty("apple.awt.draggableWindowBackground", false);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(null);
+        setUndecorated(true);
+        setBackground(new Color(0, 0, 0, 0));
+        setAlwaysOnTop(true);
+        
+        pc = new picture();
+        petLabel1 = pc.loadpicture(0, 0, "/picture/move/move1.png");
+        JLayeredPane.putLayer(petLabel1, Integer.MIN_VALUE);
+        if (petLabel1 != null) add(petLabel1);
+
+        random = new Random();
+
+        if (petLabel1 != null) photomove1 = new PhotoMoving(petLabel1);
+
+        checkmove = true;
+        xDirection = random.nextInt(3) - 1; 
+        yDirection = random.nextInt(3) - 1; 
+        while (xDirection == 0 && yDirection == 0) {
+            xDirection = random.nextInt(3) - 1;
+            yDirection = random.nextInt(3) - 1;
+        }
+
+        timer = new Timer(350, new ActionListener() {   //貓咪各種型態設置
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ifchange = false;
+                dontsleep++;
+                int ifsleep = random.nextInt(50);
+                if (ifsleep == 1 && dontsleep>100) {
+                    dontsleep=0;
+                    enterSleepState();
+                    ifchange=true;
+                } else {
+                    updateDirection();
+                    if (!photomove1.isMoving()) {
+                        movePet();
+                        updatePetImage();
+                    }
+                }
+            }
+        });
+        timer.start();
+    }
+
+    private void enterSleepState() {        //睡覺設置
+        int tempState = state;
+        state = 3;
+        updatePetImage();
+        ifchange = true;
+        timer.stop();
+        sleeptime = 0;
+        sleepTimer = new Timer(350, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                sleeptime++;
+                int ifwake = random.nextInt(15);
+                if (ifwake == 1 && sleeptime > 30) {
+                    sleepTimer.stop();
+                    state = tempState;
+                    updatePetImage();
+                    timer.start();
+                }
+            }
+        });
+        sleepTimer.start();
+    }
+
+    private void updateDirection() {    //換方向
+        if (xDirection <= 0) {
+            if (state != 2) ifchange = true;
+            state = 2;
+        } else {
+            if (state != 1) ifchange = true;
+            state = 1;
+        }
+    }
+
+    private void updatePetImage() {
+        if (state == 1 && ifchange) {
+            pc.cgJLabelImg(petLabel1, "/picture/moveright/moveright1.png", pc.moverightstring(),8);
+        } else if (state == 2 && ifchange) {
+            pc.cgJLabelImg(petLabel1, "/picture/move/move1.png", pc.movestring(),8);
+        } else if (state == 3) {
+            pc.cgJLabelImg(petLabel1, "/picture/sleep/sleep1.png", pc.sleepstring(),4);
+        }
+    }
+
+    private void movePet() {
+        int x = petLabel1.getX() + xDirection * 15;
+        int y = petLabel1.getY() + yDirection * 15;
+
+        // Check boundaries and reverse direction if needed
+        if (x < 0 || x > getWidth() - petLabel1.getWidth()) {
+            xDirection = -xDirection;
+            x = Math.max(0, Math.min(x, getWidth() - petLabel1.getWidth()));
+        }
+        if (y < 0 || y > getHeight() - petLabel1.getHeight()) {
+            yDirection = -yDirection;
+            y = Math.max(0, Math.min(y, getHeight() - petLabel1.getHeight()));
+        }
+
+        if (xDirection == 0 || yDirection == 0) {
+            xDirection = random.nextInt(3) - 1;
+            yDirection = random.nextInt(3) - 1;
+            while (xDirection == 0 && yDirection == 0) {
+                xDirection = random.nextInt(3) - 1;
+                yDirection = random.nextInt(3) - 1;
+            }
+        }
+
+        if (ifchange) 
+            checkmove = false;
+
+        // Update the pet's location
+        if (!ifchange) {
+            if (checkmove) petLabel1.setLocation(x, y);
+            checkmove = true;
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new Desktoppet().setVisible(true);
+            }
+        });
+    }
+}

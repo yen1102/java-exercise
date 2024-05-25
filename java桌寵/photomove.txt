@@ -1,0 +1,51 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
+
+public class PhotoMoving {
+
+    private JLabel Pic;
+    private Desktoppet deskpet;
+    MyMouseInputAdapter listener;
+    public PhotoMoving(JLabel Pic,Desktoppet deskpet) {
+        this.Pic = Pic;
+        this.deskpet=deskpet;
+  
+        listener = new MyMouseInputAdapter(); 
+        Pic.addMouseListener(listener); 
+        Pic.addMouseMotionListener(listener);
+    }
+
+    class MyMouseInputAdapter extends MouseInputAdapter {
+        Point point = new Point(0, 0); 
+        boolean dragging = false; // 是否正在拖動
+
+        public void mousePressed(MouseEvent e) {
+            dragging = true;
+            point = SwingUtilities.convertPoint(Pic, e.getPoint(), Pic.getParent()); // 當前座標
+            if(deskpet.getsleep())
+                deskpet.setwakeup();
+        }
+
+        public void mouseDragged(MouseEvent e) {
+            if (!dragging) {
+                return; 
+            }
+            Point newPoint = SwingUtilities.convertPoint(Pic, e.getPoint(), Pic.getParent()); 
+            Pic.setLocation(Pic.getX() + (newPoint.x - point.x), Pic.getY() + (newPoint.y - point.y)); 
+            point = newPoint; // 更改座標點
+        }
+
+        public void mouseReleased(MouseEvent e) {
+            dragging = false; 
+        }
+
+        
+    }
+    public boolean isMoving() {
+        return listener.dragging;
+    }
+
+	
+}
