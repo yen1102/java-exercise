@@ -40,34 +40,34 @@ public class picture {
     }
 
     public String movestring() {
-        return "/picture/move/move";
+        return "/pic/move/move";
     }
 
     public String moverightstring() {
-        return "/picture/moveright/moveright";
+        return "/pic/moveright/moveright";
     }
 
     public String sleepstring(){
-        return "/picture/sleep/sleep";
+        return "/pic/sleep/sleep";
     }
 
     public String tiredstring(){
-        return "/picture/tired/tired";
+        return "/pic/tired/tired";
     }
 
     public String tiredrightstring(){
-        return "/picture/tiredright/tiredright";
+        return "/pic/tiredright/tiredright";
     }
 
     public String diestring(){
-        return "/picture/die/die";
+        return "/pic/die/die";
     }
 
     public String eatstring(){
-        return "/picture/eat/eat";
+        return "/pic/eat/eat";
     }
 
     public String sickstring(){
-        return "/picture/sick/sick";
+        return "/pic/sick/sick";
     }
 }

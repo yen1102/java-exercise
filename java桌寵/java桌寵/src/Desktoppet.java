@@ -2,7 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Random;
-
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 public class Desktoppet extends JFrame {
     private JLabel petLabel1;
     private Timer timer;
@@ -71,7 +74,7 @@ public class Desktoppet extends JFrame {
         setAlwaysOnTop(true);
 
         pc = new picture();
-        petLabel1 = pc.loadpicture(screenwidth / 2, screenheight / 2, "/picture/move/move1.png");
+        petLabel1 = pc.loadpicture(screenwidth / 2, screenheight / 2, "/pic/move/move1.png");
 
         JLayeredPane.putLayer(petLabel1, Integer.MIN_VALUE);
         if (petLabel1 != null)
@@ -328,34 +331,34 @@ public class Desktoppet extends JFrame {
             System.out.println("now is state" + state);
             if (isstart)
                 isstart = false;
-            pc.cgJLabelImg(petLabel1, "/picture/moveright/moveright1.png", pc.moverightstring(), 8);
+            pc.cgJLabelImg(petLabel1, "/pic/moveright/moveright1.png", pc.moverightstring(), 8);
         } else if ((state == 2 && ifchange) || (state == 2 && isstart)) {
             System.out.println("now is state" + state);
             if (isstart)
                 isstart = false;
-            pc.cgJLabelImg(petLabel1, "/picture/move/move1.png", pc.movestring(), 8);
+            pc.cgJLabelImg(petLabel1, "/pic/move/move1.png", pc.movestring(), 8);
         } else if (state == 3) {
             System.out.println("now is state" + state);
-            pc.cgJLabelImg(petLabel1, "/picture/sleep/sleep1.png", pc.sleepstring(), 4);
+            pc.cgJLabelImg(petLabel1, "/pic/sleep/sleep1.png", pc.sleepstring(), 4);
         } else if ((state == 5 && ifchange) || (state == 5 && isstart)) {
             System.out.println("now is state" + state);
             if (isstart)
                 isstart = false;
-            pc.cgJLabelImg(petLabel1, "/picture/tiredright/tiredright1.png", pc.tiredrightstring(), 2);
+            pc.cgJLabelImg(petLabel1, "/pic/tiredright/tiredright1.png", pc.tiredrightstring(), 2);
         } else if ((state == 4 && ifchange) || (state == 4 && isstart)) {
             System.out.println("now is state" + state);
             if (isstart)
                 isstart = false;
-            pc.cgJLabelImg(petLabel1, "/picture/tired/tired1.png", pc.tiredstring(), 2);
+            pc.cgJLabelImg(petLabel1, "/pic/tired/tired1.png", pc.tiredstring(), 2);
         } else if ((state == 6)) {
             System.out.println("now is state" + state);
-            pc.cgJLabelImg(petLabel1, "/picture/die/die1.png", pc.diestring(), 2);
+            pc.cgJLabelImg(petLabel1, "/pic/die/die1.png", pc.diestring(), 2);
         } else if ((state == 7)) {
             System.out.println("now is state" + state);
-            pc.cgJLabelImg(petLabel1, "/picture/eat/eat1.png", pc.eatstring(), 8);
+            pc.cgJLabelImg(petLabel1, "/pic/eat/eat1.png", pc.eatstring(), 8);
         } else if (state == 8) {
             System.out.println("now is state" + state);
-            pc.cgJLabelImg(petLabel1, "/picture/sick/sick1.png", pc.sickstring(), 4);
+            pc.cgJLabelImg(petLabel1, "/pic/sick/sick1.png", pc.sickstring(), 4);
         }
     }
 
@@ -477,6 +480,8 @@ public class Desktoppet extends JFrame {
                 new Desktoppet().setVisible(true);
             }
         });
+        Firebase myFirebaseRef =new Firebase ( "https://keepetogether-default-rtdb.asia-southeast1.firebasedatabase.app/> " );
+        myFirebaseRef.child ("message") .setValue ("success") ;
     }
 
 }

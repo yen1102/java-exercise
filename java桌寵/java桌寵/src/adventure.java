@@ -37,7 +37,7 @@ public class adventure{
         adventureframe.setLocationRelativeTo(deskpet);
         cat=new JLabel();
         pc=new picture();
-        cat=pc.loadpicture(50, 50, "/picture/adventure/adventure1.png");
+        cat=pc.loadpicture(50, 50, "/pic/adventure/adventure1.png");
         minute=5;
         second=0;
         timelabel=new JLabel("探險剩餘時間");
@@ -79,7 +79,7 @@ public class adventure{
             }
         });
         adventureTimer.start();
-        pc.cgJLabelImg(cat, "/picture/adventure/adventure1.png", "/picture/adventure/adventure",8);
+        pc.cgJLabelImg(cat, "/pic/adventure/adventure1.png", "/pic/adventure/adventure",8);
 
     }
 
