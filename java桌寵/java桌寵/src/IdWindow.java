@@ -71,14 +71,14 @@ public class IdWindow {
                             if(data!=null){
                                 if(data.equals( comp )){
                                     frame.setVisible(false);
-                
+                                    new Desktoppet(0).setVisible(true);
                                 }else{
                                     myFirebaseRef.child(storedID).child("use").setValue("1");
                                     frame.setVisible(false);
                                     SwingUtilities.invokeLater(new Runnable() {
                                     @Override
                                     public void run() {
-                                        new Desktoppet().setVisible(true);
+                                        new Desktoppet(1).setVisible(true);
                                     }
                                     
                                 });
@@ -89,7 +89,7 @@ public class IdWindow {
                                 SwingUtilities.invokeLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    new Desktoppet().setVisible(true);
+                                    new Desktoppet(1).setVisible(true);
                                 }
                                 
                             });
